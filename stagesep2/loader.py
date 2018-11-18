@@ -53,7 +53,11 @@ class SSVideo(object):
 
 
 class VideoManager(object):
-    """ singleton """
+    """
+    Analyser需要的信息都应该在此处被导入
+    例如 作为分析主体的 视频
+    例如 match template需要的 模板图片
+    """
     TAG = 'VideoManager'
 
     # 待测视频会被添加到这里

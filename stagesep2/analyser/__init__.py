@@ -1,3 +1,8 @@
+"""
+analyser
+
+opencv frame -> result
+"""
 from stagesep2.analyser.ocr import OCRAnalyser
 from stagesep2.analyser.match_template import MatchTemplateAnalyser
 
