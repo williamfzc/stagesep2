@@ -68,41 +68,47 @@ class AnalyserRunner(object):
     - 将结果传递给reporter进行处理
     """
     TAG = 'AnalyserRunner'
+    result_reporter = ResultReporter()
 
     @classmethod
     def run(cls):
         analyser_list = check_analyser(Config.analyser_list)
         video_dict = VideoManager.video_dict
-        result_reporter = ResultReporter()
         logger.info(cls.TAG, analyser=analyser_list, video=video_dict)
 
         for each_video_name, each_ssv in video_dict.items():
-            with video_capture(each_ssv) as each_video:
-                ret, frame = each_video.read()
-                while ret:
-                    if not ret:
-                        # end of video
-                        break
+            cls.analyse_video(each_ssv, analyser_list)
 
-                    # current status
-                    cur_frame_count = each_video.get(cv2.CAP_PROP_POS_FRAMES)
-                    cur_second = each_video.get(cv2.CAP_PROP_POS_MSEC) / 1000
-                    logger.info(cls.TAG, msg='analysing', video=each_ssv, frame=cur_frame_count, time=cur_second)
-
-                    # new row of result
-                    new_row = ResultRow(
-                        result_reporter.result_id,
-                        each_ssv.video_path,
-                        cur_frame_count,
-                        cur_second,
-                    )
-
-                    for each_analyser in analyser_list:
-                        result = each_analyser.run(frame)
-                        new_row.add_analyser_result(each_analyser.name, result)
-
-                    result_reporter.add_row(new_row)
-                    ret, frame = each_video.read()
-
-        result = result_reporter.export()
+        # export result
+        result = cls.result_reporter.export()
         print(result)
+
+    @classmethod
+    def analyse_video(cls, ssv_video, analyser_list):
+        """ analyse ssv video """
+        with video_capture(ssv_video) as each_video:
+            ret, frame = each_video.read()
+            while ret:
+                if not ret:
+                    # end of video
+                    break
+
+                # current status
+                cur_frame_count = each_video.get(cv2.CAP_PROP_POS_FRAMES)
+                cur_second = each_video.get(cv2.CAP_PROP_POS_MSEC) / 1000
+                logger.info(cls.TAG, msg='analysing', video=ssv_video.video_path, frame=cur_frame_count, time=cur_second)
+
+                # new row of result
+                new_row = ResultRow(
+                    cls.result_reporter.result_id,
+                    ssv_video.video_path,
+                    cur_frame_count,
+                    cur_second,
+                )
+
+                for each_analyser in analyser_list:
+                    result = each_analyser.run(frame)
+                    new_row.add_analyser_result(each_analyser.name, result)
+
+                cls.result_reporter.add_row(new_row)
+                ret, frame = each_video.read()

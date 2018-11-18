@@ -7,6 +7,7 @@
 - 数据库交互
 """
 import uuid
+import json
 
 
 class ResultRow(object):
@@ -24,7 +25,7 @@ class ResultRow(object):
         self.video_name = video_name
         # current frame number
         # 当前的结果对应的帧编号
-        self.frame_id = frame_id,
+        self.frame_id = frame_id
         # current time
         # 当前的结果对应的帧，在视频中对应的时间
         self.current_time = current_time
@@ -43,15 +44,20 @@ class ResultRow(object):
 
         self.__dict__[name] = result
 
+    def __str__(self):
+        return json.dumps(self.__dict__)
+
+    __repr__ = __str__
+
 
 class ResultReporter(object):
     def __init__(self):
-        self.result_id = uuid.uuid1()
+        self.result_id = str(uuid.uuid1())
         self.row_list = list()
 
     def add_row(self, new_row):
         self.row_list.append(new_row)
 
     def export(self, mode=None):
-        # TODO mode: csv/json ...
+        # TODO mode: csv/json, file or str
         return self.row_list
