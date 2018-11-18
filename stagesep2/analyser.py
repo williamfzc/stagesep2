@@ -10,6 +10,7 @@ import cv2
 from stagesep2.loader import VideoManager
 from stagesep2.config import Config
 from stagesep2.logger import logger
+from stagesep2.reporter import ResultReporter, ResultRow
 
 
 class BaseAnalyser(object):
@@ -22,7 +23,7 @@ class BaseAnalyser(object):
 
 class OCRAnalyser(BaseAnalyser):
     """ ocr analyser """
-    name = 'OCR'
+    name = 'ocr'
 
 
 class MatchTemplateAnalyser(BaseAnalyser):
@@ -72,6 +73,7 @@ class AnalyserRunner(object):
     def run(cls):
         analyser_list = check_analyser(Config.analyser_list)
         video_dict = VideoManager.video_dict
+        result_reporter = ResultReporter()
         logger.info(cls.TAG, analyser=analyser_list, video=video_dict)
 
         for each_video_name, each_ssv in video_dict.items():
@@ -87,10 +89,20 @@ class AnalyserRunner(object):
                     cur_second = each_video.get(cv2.CAP_PROP_POS_MSEC) / 1000
                     logger.info(cls.TAG, msg='analysing', video=each_ssv, frame=cur_frame_count, time=cur_second)
 
-                    # TODO main logic
-                    result_dict = dict()
+                    # new row of result
+                    new_row = ResultRow(
+                        result_reporter.result_id,
+                        each_ssv.video_path,
+                        cur_frame_count,
+                        cur_second,
+                    )
+
                     for each_analyser in analyser_list:
                         result = each_analyser.run(frame)
-                        result_dict[each_analyser.name] = result
+                        new_row.add_analyser_result(each_analyser.name, result)
 
+                    result_reporter.add_row(new_row)
                     ret, frame = each_video.read()
+
+        result = result_reporter.export()
+        print(result)
