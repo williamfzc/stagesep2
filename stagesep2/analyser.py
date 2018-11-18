@@ -9,6 +9,7 @@ import cv2
 
 from stagesep2.loader import VideoManager
 from stagesep2.config import Config
+from stagesep2.logger import logger
 
 
 class BaseAnalyser(object):
@@ -65,11 +66,13 @@ class AnalyserRunner(object):
             - 记录结果
     - 将结果传递给reporter进行处理
     """
+    TAG = 'AnalyserRunner'
 
     @classmethod
     def run(cls):
         analyser_list = check_analyser(Config.analyser_list)
         video_dict = VideoManager.video_dict
+        logger.info(cls.TAG, analyser=analyser_list, video=video_dict)
 
         for each_video_name, each_ssv in video_dict.items():
             with video_capture(each_ssv) as each_video:
@@ -78,8 +81,16 @@ class AnalyserRunner(object):
                     if not ret:
                         # end of video
                         break
+
+                    # current status
+                    cur_frame_count = each_video.get(cv2.CAP_PROP_POS_FRAMES)
+                    cur_second = each_video.get(cv2.CAP_PROP_POS_MSEC) / 1000
+                    logger.info(cls.TAG, msg='analysing', video=each_ssv, frame=cur_frame_count, time=cur_second)
+
                     # TODO main logic
                     result_dict = dict()
                     for each_analyser in analyser_list:
                         result = each_analyser.run(frame)
                         result_dict[each_analyser.name] = result
+
+                    ret, frame = each_video.read()

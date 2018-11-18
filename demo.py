@@ -4,7 +4,7 @@ from stagesep2.analyser import AnalyserRunner
 from stagesep2.config import Config
 
 
-video = VideoManager.add('some_path/video1.mp4')
+video = VideoManager.add('./temp.avi')
 
 # optional
 video.template_manager.add('some_path/template1.png')

@@ -1,6 +1,7 @@
 """
 负责资源导入、模块检查
 """
+from stagesep2.logger import logger
 
 
 class TemplatePicture(object):
@@ -13,6 +14,7 @@ class TemplatePicture(object):
 
 
 class TemplateManager(object):
+    TAG = 'TemplateManager'
     # match template 需要模板图片
     # 该视频需要的模板图片会被放置在此处
     _match_template_pic_dict = dict()
@@ -20,7 +22,7 @@ class TemplateManager(object):
     # { pic_name: TemplatePicture(pic_path), }
 
     def add(self, pic_path):
-        pass
+        logger.info(self.TAG, msg='load pic', path=pic_path)
 
     def remove(self, pic_name):
         pass
@@ -40,6 +42,7 @@ class SSVideo(object):
 
 class VideoManager(object):
     """ singleton """
+    TAG = 'VideoManager'
 
     # 待测视频会被添加到这里
     # 在分析开始时，会遍历此字典
@@ -54,6 +57,7 @@ class VideoManager(object):
     def add(cls, video_path):
         new_video = SSVideo(video_path)
         cls.video_dict[new_video] = new_video
+        logger.info(cls.TAG, msg='load video', path=video_path)
         return new_video
 
     @classmethod
