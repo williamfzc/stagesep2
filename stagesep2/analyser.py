@@ -94,9 +94,9 @@ class AnalyserRunner(object):
                     break
 
                 # current status
-                cur_frame_count = each_video.get(cv2.CAP_PROP_POS_FRAMES)
+                cur_frame_count = int(each_video.get(cv2.CAP_PROP_POS_FRAMES))
                 cur_second = each_video.get(cv2.CAP_PROP_POS_MSEC) / 1000
-                logger.info(cls.TAG, msg='analysing', video=ssv_video.video_path, frame=cur_frame_count, time=cur_second)
+                logger.info(cls.TAG, msg='analysing', video=ssv_video.video_name, frame=cur_frame_count, time=cur_second)
 
                 # new row of result
                 new_row = ResultRow(

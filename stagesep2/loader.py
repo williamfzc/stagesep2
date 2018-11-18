@@ -1,16 +1,24 @@
 """
 负责资源导入、模块检查
 """
+import os
+import cv2
+
 from stagesep2.logger import logger
+
+
+def path_to_name(file_path):
+    """ full path -> file name """
+    _, name = os.path.split(file_path)
+    name, _ = os.path.splitext(name)
+    return name
 
 
 class TemplatePicture(object):
     def __init__(self, pic_path):
-        # should contains:
-        # self.pic_name
-        # self.pic_path
-        # self.cv_object
-        pass
+        self.pic_name = path_to_name(pic_path)
+        self.pic_path = pic_path
+        self.cv_object = cv2.imread(self.pic_path)
 
 
 class TemplateManager(object):
@@ -22,7 +30,10 @@ class TemplateManager(object):
     # { pic_name: TemplatePicture(pic_path), }
 
     def add(self, pic_path):
-        logger.info(self.TAG, msg='load pic', path=pic_path)
+        new_pic = TemplatePicture(pic_path)
+        new_pic_name = new_pic.pic_name
+        self._match_template_pic_dict[new_pic_name] = new_pic
+        logger.info(self.TAG, msg='LOAD PICTURE', path=pic_path, name=new_pic_name)
 
     def remove(self, pic_name):
         pass
@@ -32,6 +43,7 @@ class SSVideo(object):
     """ video object """
 
     def __init__(self, video_path):
+        self.video_name = path_to_name(video_path)
         self.video_path = video_path
         self.template_manager = TemplateManager()
 
@@ -57,7 +69,7 @@ class VideoManager(object):
     def add(cls, video_path):
         new_video = SSVideo(video_path)
         cls.video_dict[new_video] = new_video
-        logger.info(cls.TAG, msg='load video', path=video_path)
+        logger.info(cls.TAG, msg='LOAD VIDEO', path=video_path, name=new_video.video_name)
         return new_video
 
     @classmethod
