@@ -5,10 +5,15 @@
 - 特征识别
 """
 import contextlib
+import tempfile
+import subprocess
 import cv2
+import os
+import uuid
+import platform
 
 from stagesep2.loader import VideoManager
-from stagesep2.config import Config
+from stagesep2.config import NormalConfig, OCRConfig
 from stagesep2.logger import logger
 from stagesep2.reporter import ResultReporter, ResultRow
 
@@ -24,6 +29,59 @@ class BaseAnalyser(object):
 class OCRAnalyser(BaseAnalyser):
     """ ocr analyser """
     name = 'ocr'
+
+    @staticmethod
+    def is_windows():
+        return platform.system() == 'Windows'
+
+    @classmethod
+    def exec_tesseract(cls, src, dst):
+        cmd = ['tesseract', src, dst, '-l', OCRConfig.lang]
+        need_shell = cls.is_windows()
+        tesseract_process = subprocess.Popen(
+            cmd,
+            shell=need_shell,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        tesseract_process.communicate(timeout=5)
+        if tesseract_process.returncode:
+            error_msg = tesseract_process.stderr.read()
+            raise RuntimeError('tesseract error: {}'.format(error_msg))
+
+    @classmethod
+    def run(cls, frame):
+        """
+        run ocr analyser
+
+        1. write frame to file
+        2. execute tesseract to analyse it
+        3. and get its result
+        4. delete temp file and return result
+
+        :param frame:
+        :return:
+        """
+        # create temp picture file
+        temp_pic = tempfile.NamedTemporaryFile(delete=False, suffix='.png')
+        temp_pic_path = temp_pic.name
+        temp_pic.close()
+        # tesseract will auto create result file
+        # and add '.txt' after its name!
+        temp_result_path = os.path.join(NormalConfig.PROJECT_PATH, str(uuid.uuid1()))
+        real_temp_result_path = temp_result_path + '.txt'
+
+        # write in
+        cv2.imwrite(temp_pic_path, frame)
+        # execute tesseract
+        cls.exec_tesseract(temp_pic_path, temp_result_path)
+        # get result
+        with open(real_temp_result_path, encoding='utf-8') as result_file:
+            result = result_file.read()
+        # remove temp files
+        os.remove(temp_pic_path)
+        os.remove(real_temp_result_path)
+        return result
 
 
 class MatchTemplateAnalyser(BaseAnalyser):
@@ -72,7 +130,7 @@ class AnalyserRunner(object):
 
     @classmethod
     def run(cls):
-        analyser_list = check_analyser(Config.analyser_list)
+        analyser_list = check_analyser(NormalConfig.analyser_list)
         video_dict = VideoManager.video_dict
         logger.info(cls.TAG, analyser=analyser_list, video=video_dict)
 
