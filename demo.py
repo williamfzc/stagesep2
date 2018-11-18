@@ -1,6 +1,6 @@
 # :)
 from stagesep2.loader import VideoManager
-from stagesep2.analyser import AnalyserRunner
+from stagesep2.executor import AnalysisRunner
 from stagesep2.config import NormalConfig
 
 
@@ -15,4 +15,4 @@ NormalConfig.analyser_list = ['ocr', 'match_template']
 NormalConfig.output_path = './output.txt'
 
 # start
-AnalyserRunner.run()
+AnalysisRunner.run()
