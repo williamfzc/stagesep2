@@ -84,7 +84,7 @@ class AnalysisRunner(object):
                 )
 
                 for each_analyser in analyser_list:
-                    result = each_analyser.run(frame)
+                    result = each_analyser.run(frame, ssv_video)
                     new_row.add_analyser_result(each_analyser.name, result)
 
                 cls.result_reporter.add_row(new_row)

@@ -11,6 +11,7 @@ from stagesep2.config import OCRConfig, NormalConfig
 
 class OCRAnalyser(BaseAnalyser):
     """ ocr analyser """
+    # TODO 大量的io开销
     name = 'ocr'
 
     @staticmethod
@@ -33,7 +34,7 @@ class OCRAnalyser(BaseAnalyser):
             raise RuntimeError('tesseract error: {}'.format(error_msg))
 
     @classmethod
-    def run(cls, frame):
+    def run(cls, frame, *args, **kwargs):
         """
         run ocr analyser
 

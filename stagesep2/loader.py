@@ -72,8 +72,9 @@ class VideoManager(object):
     @classmethod
     def add(cls, video_path):
         new_video = SSVideo(video_path)
-        cls.video_dict[new_video] = new_video
-        logger.info(cls.TAG, msg='LOAD VIDEO', path=video_path, name=new_video.video_name)
+        new_video_name = new_video.video_name
+        cls.video_dict[new_video_name] = new_video
+        logger.info(cls.TAG, msg='LOAD VIDEO', path=video_path, name=new_video_name)
         return new_video
 
     @classmethod
