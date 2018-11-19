@@ -8,6 +8,9 @@
 """
 import uuid
 import json
+import os
+
+from stagesep2.logger import logger
 
 
 class ResultRow(object):
@@ -51,13 +54,28 @@ class ResultRow(object):
 
 
 class ResultReporter(object):
+    TAG = 'ResultReporter'
+
     def __init__(self):
         self.result_id = str(uuid.uuid1())
-        self.row_list = list()
+        self._row_list = list()
 
     def add_row(self, new_row):
-        self.row_list.append(new_row)
+        self._row_list.append(new_row)
 
-    def export(self, mode=None):
-        # TODO mode: csv/json, file or str
-        return self.row_list
+    def export(self, file_path):
+        """ export result to json file """
+        if os.path.isfile(file_path):
+            logger.warn(self.TAG, msg='File {} already existed')
+            file_path = os.path.join(os.path.dirname(file_path), self.result_id + '.json')
+        elif os.path.isdir(file_path):
+            logger.warn(self.TAG, msg='Path {} is a directory')
+            file_path = os.path.join(file_path, self.result_id + '.json')
+
+        with open(file_path, 'w+') as json_file:
+            json_file.write(str(self.data))
+
+    @property
+    def data(self):
+        """ return data, consisted by pyobject """
+        return self._row_list

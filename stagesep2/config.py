@@ -12,5 +12,4 @@ class OCRConfig(object):
 class NormalConfig(object):
     PROJECT_PATH = os.path.dirname(os.path.dirname(__file__))
 
-    analyser_list = ['ocr', 'match_template']
-    output_path = './output.json'
+    ANALYSER_LIST = ['ocr', 'match_template']

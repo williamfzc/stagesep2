@@ -4,17 +4,22 @@ from stagesep2.executor import AnalysisRunner
 from stagesep2.config import NormalConfig
 
 
-video = VideoManager.add('./demo_video.mp4')
+video = VideoManager.add('./temp.avi')
 
 # 逆时针旋转 90 * rotate 度
 video.rotate = 3
 
 # optional
-video.template_manager.add('./template3.png')
+video.template_manager.add('./template.png')
 
 # change config
-NormalConfig.analyser_list = ['ocr', 'match_template']
-NormalConfig.output_path = './output.txt'
+NormalConfig.ANALYSER_LIST = ['ocr', 'match_template']
 
 # start
-AnalysisRunner.run()
+result = AnalysisRunner.run()
+
+# analyse it (is a dict)
+dict_data = result.data
+
+# or export your result
+result.export('./result.json')

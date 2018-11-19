@@ -56,7 +56,7 @@ class AnalysisRunner(object):
 
     @classmethod
     def run(cls):
-        analyser_list = check_analyser(NormalConfig.analyser_list)
+        analyser_list = check_analyser(NormalConfig.ANALYSER_LIST)
         video_dict = VideoManager.video_dict
         logger.info(cls.TAG, analyser=analyser_list, video=video_dict)
 
@@ -64,8 +64,7 @@ class AnalysisRunner(object):
             cls.analyse_video(each_ssv, analyser_list)
 
         # export result
-        result = cls.result_reporter.export()
-        print(result)
+        return cls.result_reporter
 
     @classmethod
     def analyse_video(cls, ssv_video, analyser_list):
