@@ -6,8 +6,9 @@
 """
 import contextlib
 import cv2
+import numpy as np
 
-from stagesep2.loader import VideoManager
+from stagesep2.loader import VideoManager, frame_prepare
 from stagesep2.config import NormalConfig
 from stagesep2.logger import logger
 from stagesep2.reporter import ResultReporter, ResultRow
@@ -22,6 +23,12 @@ def check_analyser(analyser_list):
             raise NotImplementedError('analyser {} not found'.format(each))
         new_analyser_list.append(ANALYSER_DICT[each])
     return new_analyser_list
+
+
+def rotate_pic(old_pic, rotate_time):
+    """ 帧逆时针旋转 90*rotate_time 度 """
+    new_pic = np.rot90(old_pic, rotate_time)
+    return new_pic
 
 
 @contextlib.contextmanager
@@ -69,6 +76,11 @@ class AnalysisRunner(object):
                 if not ret:
                     # end of video
                     break
+
+                # prepare frame
+                frame = frame_prepare(frame)
+                # rotate
+                frame = rotate_pic(frame, ssv_video.rotate)
 
                 # current status
                 cur_frame_count = int(each_video.get(cv2.CAP_PROP_POS_FRAMES))

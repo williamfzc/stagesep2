@@ -19,6 +19,12 @@ def is_path_existed(file_path):
     return os.path.isfile(file_path)
 
 
+def frame_prepare(frame):
+    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    blur_gray_frame = cv2.medianBlur(gray_frame, 3)
+    return blur_gray_frame
+
+
 class TemplatePicture(object):
     def __init__(self, pic_path):
         if not is_path_existed(pic_path):
@@ -26,7 +32,7 @@ class TemplatePicture(object):
 
         self.pic_name = path_to_name(pic_path)
         self.pic_path = pic_path
-        self.cv_object = cv2.imread(self.pic_path)
+        self.cv_object = frame_prepare(cv2.imread(self.pic_path))
 
 
 class TemplateManager(object):
@@ -46,6 +52,9 @@ class TemplateManager(object):
     def remove(self, pic_name):
         pass
 
+    def get_dict(self):
+        return self._match_template_pic_dict
+
 
 class SSVideo(object):
     """ video object """
@@ -57,6 +66,9 @@ class SSVideo(object):
         self.video_name = path_to_name(video_path)
         self.video_path = video_path
         self.template_manager = TemplateManager()
+
+        # degree = rotate * 90, 逆时针
+        self.rotate = 0
 
     # add template example:
     # ssv = SSVideo('some_path/123.mp4')

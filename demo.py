@@ -4,11 +4,13 @@ from stagesep2.executor import AnalysisRunner
 from stagesep2.config import NormalConfig
 
 
-video = VideoManager.add('./temp.avi')
+video = VideoManager.add('./demo_video.mp4')
+
+# 逆时针旋转 90 * rotate 度
+video.rotate = 3
 
 # optional
-video.template_manager.add('some_path/template1.png')
-video.template_manager.add('some_path/template2.png')
+video.template_manager.add('./template3.png')
 
 # change config
 NormalConfig.analyser_list = ['ocr', 'match_template']
