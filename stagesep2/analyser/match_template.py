@@ -13,11 +13,8 @@ class MatchTemplateAnalyser(BaseAnalyser):
         result_dict = dict()
         template_pic_dict = ssv.template_manager.get_dict()
         for each_pic_name, each_pic in template_pic_dict.items():
-            cv2.imwrite('1.png', frame)
-            cv2.imwrite('2.png', each_pic.cv_object)
             # TODO match_template not always very match
             res = cv2.matchTemplate(frame, each_pic.cv_object, cv2.TM_SQDIFF_NORMED)
             _, max_val, _, _ = cv2.minMaxLoc(res)
             result_dict[each_pic_name] = max_val
-        print(result_dict)
         return result_dict
