@@ -14,8 +14,16 @@ def path_to_name(file_path):
     return name
 
 
+def is_path_existed(file_path):
+    """ check if file is existed """
+    return os.path.isfile(file_path)
+
+
 class TemplatePicture(object):
     def __init__(self, pic_path):
+        if not is_path_existed(pic_path):
+            raise FileNotFoundError('file not existed: {}'.format(pic_path))
+
         self.pic_name = path_to_name(pic_path)
         self.pic_path = pic_path
         self.cv_object = cv2.imread(self.pic_path)
@@ -43,6 +51,9 @@ class SSVideo(object):
     """ video object """
 
     def __init__(self, video_path):
+        if not is_path_existed(video_path):
+            raise FileNotFoundError('file not existed: {}'.format(video_path))
+
         self.video_name = path_to_name(video_path)
         self.video_path = video_path
         self.template_manager = TemplateManager()
