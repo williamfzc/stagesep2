@@ -10,6 +10,8 @@ class OCRConfig(object):
 
 
 class NormalConfig(object):
+    # project root path
     PROJECT_PATH = os.path.dirname(os.path.dirname(__file__))
 
-    ANALYSER_LIST = ['ocr', 'match_template']
+    # default analyser list (will run)
+    ANALYSER_LIST = ['ocr', 'match_template', 'trend']
