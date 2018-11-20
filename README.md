@@ -1,5 +1,7 @@
 # stagesep2
 
+[![PyPI version](https://badge.fury.io/py/stagesep2.svg)](https://badge.fury.io/py/stagesep2)
+
 > detect stage in video, a better [stagesep](https://github.com/williamfzc/stagesep)
 
 ## 目的
@@ -14,7 +16,7 @@
 
 ## 使用
 
-见`demo.py`。
+见[demo.py](demo.py)。
 
 ## 原理
 
