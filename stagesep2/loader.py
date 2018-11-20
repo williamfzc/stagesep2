@@ -5,6 +5,7 @@ import os
 import cv2
 
 from stagesep2.logger import logger
+from stagesep2.utils import *
 
 
 def path_to_name(file_path):
@@ -65,14 +66,49 @@ class SSVideo(object):
 
         self.video_name = path_to_name(video_path)
         self.video_path = video_path
+
+        # add template example:
+        # ssv = SSVideo('some_path/123.mp4')
+        # ssv.template_manager.add('some_path/123.png')
         self.template_manager = TemplateManager()
 
         # degree = rotate * 90, 逆时针
-        self.rotate = 0
+        self._rotate = 0
 
-    # add template example:
-    # ssv = SSVideo('some_path/123.mp4')
-    # ssv.template_manager.add('some_path/123.png')
+        # video info
+        # total frame count
+        self.total_frame = None
+
+        # first and last frame
+        self.first_frame = None
+        self.last_frame = None
+
+    @property
+    def rotate(self):
+        return self._rotate
+
+    @rotate.setter
+    def rotate(self, value):
+        if not isinstance(value, int):
+            raise TypeError('rotate should be int')
+        self._rotate = value
+        self.load_video_info()
+
+    def load_video_info(self):
+        # TODO need more info?
+        # get info from video
+        with video_capture(self) as video_src:
+            total_frame = video_src.get(cv2.CAP_PROP_FRAME_COUNT)
+
+            _, first_frame = video_src.read()
+            video_src.set(1, total_frame - 1)
+            _, last_frame = video_src.read()
+            first_frame, last_frame = [rotate_pic(each, self._rotate) for each in (first_frame, last_frame)]
+
+        # init
+        self.first_frame = first_frame
+        self.last_frame = last_frame
+        self.total_frame = total_frame
 
 
 class VideoManager(object):

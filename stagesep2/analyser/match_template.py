@@ -1,7 +1,6 @@
 import cv2
 
 from stagesep2.analyser.base import BaseAnalyser
-from stagesep2.loader import SSVideo
 
 
 class MatchTemplateAnalyser(BaseAnalyser):
@@ -9,7 +8,7 @@ class MatchTemplateAnalyser(BaseAnalyser):
     name = 'match_template'
 
     @classmethod
-    def run(cls, frame, ssv: SSVideo):
+    def run(cls, frame, ssv):
         result_dict = dict()
         template_pic_dict = ssv.template_manager.get_dict()
         for each_pic_name, each_pic in template_pic_dict.items():
