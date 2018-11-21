@@ -1,4 +1,3 @@
-import platform
 import subprocess
 import tempfile
 import os
@@ -8,6 +7,7 @@ import jieba
 
 from stagesep2.analyser.base import BaseAnalyser
 from stagesep2.config import OCRConfig, NormalConfig
+from stagesep2.utils import *
 
 
 def content_filter(old_content):
@@ -21,14 +21,10 @@ class OCRAnalyser(BaseAnalyser):
     # TODO 大量的io开销
     name = 'ocr'
 
-    @staticmethod
-    def is_windows():
-        return platform.system() == 'Windows'
-
     @classmethod
     def exec_tesseract(cls, src, dst):
         cmd = ['tesseract', src, dst, '-l', OCRConfig.lang]
-        need_shell = cls.is_windows()
+        need_shell = is_windows()
         tesseract_process = subprocess.Popen(
             cmd,
             shell=need_shell,

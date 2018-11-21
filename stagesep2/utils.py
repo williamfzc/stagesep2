@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import contextlib
+import platform
 
 from stagesep2.analyser import ANALYSER_DICT
 
@@ -29,8 +30,13 @@ def video_capture(ssv):
     video_cap.release()
 
 
+def is_windows():
+    return platform.system() == 'Windows'
+
+
 __all__ = [
     'check_analyser',
     'rotate_pic',
     'video_capture',
+    'is_windows',
 ]
