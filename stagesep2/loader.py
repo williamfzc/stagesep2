@@ -51,7 +51,11 @@ class TemplateManager(object):
         logger.info(self.TAG, msg='LOAD PICTURE', path=pic_path, name=new_pic_name)
 
     def remove(self, pic_name):
-        pass
+        if pic_name in self._match_template_pic_dict:
+            del self._match_template_pic_dict[pic_name]
+            return True
+        logger.warn(self.TAG, msg='no pic named {}'.format(pic_name))
+        return False
 
     def get_dict(self):
         return self._match_template_pic_dict
@@ -138,4 +142,8 @@ class VideoManager(object):
 
     @classmethod
     def remove(cls, video_name):
-        pass
+        if video_name in cls.video_dict:
+            del cls.video_dict[video_name]
+            return True
+        logger.warn(cls.TAG, msg='no video named {}'.format(video_name))
+        return False
