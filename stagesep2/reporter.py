@@ -66,14 +66,15 @@ class ResultReporter(object):
     def export(self, file_path):
         """ export result to json file """
         if os.path.isfile(file_path):
-            logger.warn(self.TAG, msg='File {} already existed'.format(file_path))
+            logger.warn(self.TAG, msg='File "{}" already existed'.format(file_path))
             file_path = os.path.join(os.path.dirname(file_path), self.result_id + '.json')
         elif os.path.isdir(file_path):
-            logger.warn(self.TAG, msg='Path {} is a directory'.format(file_path))
+            logger.warn(self.TAG, msg='Path "{}" is a directory'.format(file_path))
             file_path = os.path.join(file_path, self.result_id + '.json')
 
         with open(file_path, 'w+') as json_file:
             json_file.write(str(self.data))
+            logger.info(self.TAG, msg='Result saved in "{}"'.format(file_path))
 
     @property
     def data(self):

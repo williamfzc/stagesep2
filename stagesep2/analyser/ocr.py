@@ -4,10 +4,10 @@ import os
 import cv2
 import uuid
 import jieba
+import platform
 
 from stagesep2.analyser.base import BaseAnalyser
 from stagesep2.config import OCRConfig, NormalConfig
-from stagesep2.utils import *
 
 
 def content_filter(old_content):
@@ -24,7 +24,7 @@ class OCRAnalyser(BaseAnalyser):
     @classmethod
     def exec_tesseract(cls, src, dst):
         cmd = ['tesseract', src, dst, '-l', OCRConfig.lang]
-        need_shell = is_windows()
+        need_shell = platform.system() == 'Windows'
         tesseract_process = subprocess.Popen(
             cmd,
             shell=need_shell,
