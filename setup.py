@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='stagesep2',
-    version='0.1.0',
+    version='0.1.1',
     description='detect stages in video',
     author='williamfzc',
     author_email='fengzc@vip.qq.com',
@@ -14,5 +14,6 @@ setup(
         'structlog',
         'numpy',
         'jieba',
+        'scikit-image'
     ]
 )
