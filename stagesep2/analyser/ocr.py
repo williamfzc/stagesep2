@@ -4,9 +4,16 @@ import tempfile
 import os
 import cv2
 import uuid
+import jieba
 
 from stagesep2.analyser.base import BaseAnalyser
 from stagesep2.config import OCRConfig, NormalConfig
+
+
+def content_filter(old_content):
+    """ remove unused content and rebuild a word list """
+    new_content = old_content.replace(' ', '').replace('\n', '').replace('\r', '')
+    return list(jieba.cut(new_content))
 
 
 class OCRAnalyser(BaseAnalyser):
@@ -62,6 +69,8 @@ class OCRAnalyser(BaseAnalyser):
         # get result
         with open(real_temp_result_path, encoding='utf-8') as result_file:
             result = result_file.read()
+        # content filter
+        result = content_filter(result)
         # remove temp files
         os.remove(temp_pic_path)
         os.remove(real_temp_result_path)
