@@ -13,7 +13,7 @@ video.rotate = 3
 video.template_manager.add('./template.png')
 
 # change config
-NormalConfig.ANALYSER_LIST = ['ocr', 'match_template']
+NormalConfig.ANALYSER_LIST = ['ocr', 'match_template', 'trend']
 
 # start
 result = AnalysisRunner.run()
