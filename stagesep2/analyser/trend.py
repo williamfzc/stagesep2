@@ -1,3 +1,5 @@
+from skimage.measure import compare_ssim
+
 from stagesep2.analyser.base import BaseAnalyser
 
 
@@ -14,5 +16,10 @@ class TrendAnalyser(BaseAnalyser):
         :param ssv:
         :return:
         """
-        # TODO
-        return ''
+        first_sim = compare_ssim(ssv.first_frame, frame)
+        last_sim = compare_ssim(ssv.last_frame, frame)
+        result_dict = {
+            'first': first_sim,
+            'last': last_sim,
+        }
+        return result_dict

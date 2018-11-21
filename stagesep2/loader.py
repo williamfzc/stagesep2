@@ -107,7 +107,11 @@ class SSVideo(object):
             _, first_frame = video_src.read()
             video_src.set(1, total_frame - 1)
             _, last_frame = video_src.read()
-            first_frame, last_frame = [rotate_pic(each, self._rotate) for each in (first_frame, last_frame)]
+
+            # prepare, and rotate
+            first_frame, last_frame = [
+                frame_prepare(rotate_pic(each, self._rotate))
+                for each in (first_frame, last_frame)]
 
         # init
         self.first_frame = first_frame
