@@ -58,7 +58,6 @@ class AnalysisRunner(object):
                 # current status
                 cur_frame_count = int(each_video.get(cv2.CAP_PROP_POS_FRAMES))
                 cur_second = each_video.get(cv2.CAP_PROP_POS_MSEC) / 1000
-                logger.info(cls.TAG, msg='analysing', video=ssv_video.video_name, frame=cur_frame_count, time=cur_second)
 
                 # new row of result
                 new_row = ResultRow(
@@ -72,5 +71,8 @@ class AnalysisRunner(object):
                     result = each_analyser.run(frame, ssv_video)
                     new_row.add_analyser_result(each_analyser.name, result)
 
+                logger.info(cls.TAG, msg='analysing', **new_row.__dict__)
                 cls.result_reporter.add_row(new_row)
+
+                # read new frame
                 ret, frame = each_video.read()
