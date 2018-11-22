@@ -3,10 +3,15 @@
 支持读取外部json配置
 """
 import os
+import cv2
 
 
 class OCRConfig(object):
     lang = 'eng'
+
+
+class MatchTemplateConfig(object):
+    cv_method = cv2.TM_CCOEFF_NORMED
 
 
 class NormalConfig(object):
