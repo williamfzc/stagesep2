@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='stagesep2',
-    version='0.1.1',
+    version='0.1.2',
     description='detect stages in video',
     author='williamfzc',
     author_email='fengzc@vip.qq.com',

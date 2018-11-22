@@ -18,11 +18,44 @@
 
 主要支持 OCR / 模板匹配 / 首尾帧相似度。
 
-具体使用方式见[demo.py](demo.py)。
+提供了用户友好的API供用户调用：
+
+```python
+# :)
+from stagesep2.loader import VideoManager
+from stagesep2.executor import AnalysisRunner
+from stagesep2.config import NormalConfig
+
+
+video = VideoManager.add('./demo_video.mp4')
+
+# 逆时针旋转 90 * rotate 度
+video.rotate = 3
+
+# optional
+video.template_manager.add('./template1.png')
+
+# change config
+NormalConfig.ANALYSER_LIST = ['ocr', 'match_template', 'trend']
+
+# start
+result = AnalysisRunner.run()
+
+# analyse it (is a dict)
+dict_data = result.data
+
+# or export your result
+result.export('./result.json')
+```
+
+更多使用方式见[demo.py](demo.py)。
 
 ## 原理
 
-更多介绍暂时移步[stagesep](https://github.com/williamfzc/stagesep)
+更多介绍暂时移步：
+
+- [stagesep](https://github.com/williamfzc/stagesep)
+- [利用图像识别与 OCR 进行速度类测试](https://testerhome.com/topics/16063)
 
 ## 协议
 
