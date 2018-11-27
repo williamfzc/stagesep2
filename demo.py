@@ -1,7 +1,5 @@
 # :)
-from stagesep2.loader import VideoManager
-from stagesep2.executor import AnalysisRunner
-from stagesep2.config import NormalConfig
+from stagesep2 import VideoManager, AnalysisRunner, NormalConfig
 
 
 video = VideoManager.add('./temp.avi')
