@@ -8,6 +8,7 @@ import platform
 
 from stagesep2.analyser.base import BaseAnalyser
 from stagesep2.config import OCRConfig, NormalConfig
+from stagesep2.logger import logger
 
 
 def content_filter(old_content):
@@ -20,6 +21,7 @@ class OCRAnalyser(BaseAnalyser):
     """ ocr analyser """
     # TODO 大量的io开销
     name = 'ocr'
+    TAG = 'OCRAnalyser'
 
     @classmethod
     def exec_tesseract(cls, src, dst):
@@ -31,7 +33,14 @@ class OCRAnalyser(BaseAnalyser):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        tesseract_process.communicate(timeout=5)
+
+        try:
+            tesseract_process.communicate(timeout=5)
+        except subprocess.TimeoutExpired:
+            logger.warn(cls.TAG, msg='tesseract timeout')
+            cls.exec_tesseract(src, dst)
+            return
+
         if tesseract_process.returncode:
             error_msg = tesseract_process.stderr.read()
             raise RuntimeError('tesseract error: {}'.format(error_msg))
@@ -53,6 +62,7 @@ class OCRAnalyser(BaseAnalyser):
         temp_pic = tempfile.NamedTemporaryFile(delete=False, suffix='.png')
         temp_pic_path = temp_pic.name
         temp_pic.close()
+
         # tesseract will auto create result file
         # and add '.txt' after its name!
         temp_result_path = os.path.join(NormalConfig.PROJECT_PATH, str(uuid.uuid1()))
@@ -60,13 +70,17 @@ class OCRAnalyser(BaseAnalyser):
 
         # write in
         cv2.imwrite(temp_pic_path, frame)
+
         # execute tesseract
         cls.exec_tesseract(temp_pic_path, temp_result_path)
+
         # get result
         with open(real_temp_result_path, encoding='utf-8') as result_file:
             result = result_file.read()
+
         # content filter
         result = content_filter(result)
+
         # remove temp files
         os.remove(temp_pic_path)
         os.remove(real_temp_result_path)
