@@ -140,6 +140,15 @@ result.export('./result.json')
 
 ## 相关内容
 
+### 依赖
+
+- [opencv](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_tutorials.html): 图像与视频处理
+- [tesseract-ocr](https://github.com/tesseract-ocr/tesseract/wiki/Downloads): 文本检测
+- [skimage](https://github.com/scikit-image/scikit-image): 主要用于图片相似度比较
+- [jieba](https://github.com/fxsjy/jieba)：ocr结果的进一步处理
+
+### 旧版本
+
 - [stagesep](https://github.com/williamfzc/stagesep)
 - [利用图像识别与 OCR 进行速度类测试](https://testerhome.com/topics/16063)
 
