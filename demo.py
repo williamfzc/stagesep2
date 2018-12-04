@@ -1,5 +1,6 @@
 # :)
-from stagesep2 import VideoManager, AnalysisRunner, NormalConfig, OCRConfig
+from stagesep2 import VideoManager, AnalysisRunner, NormalConfig, OCRConfig, MatchTemplateConfig
+import cv2
 
 
 # 添加待测视频
@@ -23,7 +24,15 @@ NormalConfig.ANALYSER_LIST = ['ocr', 'match_template', 'trend']
 # 默认情况下是英文（tesseract自带了英文）
 # 如果使用中文，则需要自行安装tesseract的中文支持包，详见tesseract wiki：
 # https://github.com/tesseract-ocr/tesseract/wiki
-OCRConfig.lang = 'chi_sim'
+OCRConfig.lang = 'eng'
+# 设置方法与tesseract保持一致，其他语言请参考官方文档
+# 这是简体中文的例子
+# OCRConfig.lang = 'chi_sim'
+
+# 修改match template的算法
+# 此处直接使用了opencv提供的matchTemplate
+# 可参考 https://docs.opencv.org/master/d4/dc6/tutorial_py_template_matching.html
+MatchTemplateConfig.cv_method = cv2.TM_SQDIFF_NORMED
 
 # 启动分析
 result = AnalysisRunner.run()
