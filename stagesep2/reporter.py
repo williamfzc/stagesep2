@@ -11,6 +11,7 @@ import json
 import os
 
 from stagesep2.logger import logger
+from stagesep2.painter import ReportPainter
 
 
 class ResultRow(object):
@@ -50,6 +51,9 @@ class ResultRow(object):
     def __str__(self):
         return json.dumps(self.__dict__)
 
+    def to_dict(self):
+        return self.__dict__
+
     __repr__ = __str__
 
 
@@ -80,3 +84,7 @@ class ResultReporter(object):
     def data(self):
         """ return data, consisted by pyobject """
         return self._row_list
+
+    def draw(self, dst):
+        """ draw analysis report to file named dst """
+        ReportPainter.draw_with_json(str(self.data), dst)

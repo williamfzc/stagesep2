@@ -14,6 +14,7 @@ setup(
         'structlog',
         'numpy',
         'jieba',
-        'scikit-image'
+        'scikit-image',
+        'pyecharts',
     ]
 )

@@ -42,3 +42,6 @@ dict_data = result.data
 
 # 或者输出到文件内（json）
 result.export('./result.json')
+
+# 绘制结果报告
+result.draw('./result_report.html')
