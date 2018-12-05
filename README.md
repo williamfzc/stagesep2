@@ -81,6 +81,9 @@ dict_data = result.data
 
 # or export your result
 result.export('./result.json')
+
+# draw html report
+result.draw('./result_report.html')
 ```
 
 更多使用方式，推荐看[demo.py](demo.py)。
@@ -89,7 +92,7 @@ result.export('./result.json')
 
 以 dict/json 形式出现。下面是数据示例：
 
-```python
+```
 [
     {
         # 本次测试的id
