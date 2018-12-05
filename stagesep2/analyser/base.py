@@ -14,3 +14,13 @@ class BaseAnalyser(object):
         :return:
         """
         return ''
+
+    @classmethod
+    def clean(cls, *args, **kwargs):
+        """
+        clean Analyser config after usage
+
+        :param args:
+        :param kwargs:
+        :return:
+        """

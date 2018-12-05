@@ -35,3 +35,7 @@ class TrendAnalyser(BaseAnalyser):
             'last': last_sim,
         }
         return result_dict
+
+    @classmethod
+    def clean(cls, *args, **kwargs):
+        cls.previous_frame = None

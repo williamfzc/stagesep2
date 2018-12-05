@@ -76,3 +76,12 @@ class AnalysisRunner(object):
 
                 # read new frame
                 ret, frame = each_video.read()
+
+        # clean analyser
+        for each in analyser_list:
+            each.clean()
+
+    @classmethod
+    def reset(cls):
+        """ clean config after usage """
+        cls.result_reporter = ResultReporter()
