@@ -3,8 +3,8 @@ from setuptools import setup, find_packages
 
 setup(
     name='stagesep2',
-    version='0.1.2',
-    description='detect stages in video',
+    version='0.1.3',
+    description='Analyse, and convert video into useful data.',
     author='williamfzc',
     author_email='fengzc@vip.qq.com',
     url='https://github.com/williamfzc/stagesep2',
