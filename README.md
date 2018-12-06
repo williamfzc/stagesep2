@@ -86,6 +86,20 @@ result.export('./result.json')
 result.draw('./result_report.html')
 ```
 
+分析多个视频：
+
+```python
+video1 = VideoManager.add('./demo_video.mp4')
+video2 = VideoMangaer.add('./demo_video2.mp4')
+
+# 不同视频可以对应不同的模板
+video1.template_manager.add('./template1.png')
+video2.template_manager.add('./template2.png')
+
+# 运行完的结果会以列表形式出现
+result1, result2 = AnalysisRunner.run()
+```
+
 更多使用方式，推荐看[demo.py](demo.py)。
 
 ### 结果

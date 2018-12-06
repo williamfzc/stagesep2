@@ -26,7 +26,6 @@ class AnalysisRunner(object):
     - 将结果传递给reporter进行处理
     """
     TAG = 'AnalyserRunner'
-    result_reporter = ResultReporter()
 
     @classmethod
     def run(cls):
@@ -34,14 +33,19 @@ class AnalysisRunner(object):
         video_dict = VideoManager.video_dict
         logger.info(cls.TAG, analyser=analyser_list, video=video_dict)
 
+        result_reporter_list = list()
         for each_video_name, each_ssv in video_dict.items():
-            cls.analyse_video(each_ssv, analyser_list)
+            result_reporter = ResultReporter(each_video_name)
+            cls.analyse_video(each_ssv, analyser_list, result_reporter)
+            result_reporter_list.append(result_reporter)
 
         # export result
-        return cls.result_reporter
+        if len(result_reporter_list) <= 1:
+            return result_reporter_list[0]
+        return result_reporter_list
 
     @classmethod
-    def analyse_video(cls, ssv_video, analyser_list):
+    def analyse_video(cls, ssv_video, analyser_list, result_reporter):
         """ analyse ssv video """
         with video_capture(ssv_video) as each_video:
             ret, frame = each_video.read()
@@ -61,7 +65,7 @@ class AnalysisRunner(object):
 
                 # new row of result
                 new_row = ResultRow(
-                    cls.result_reporter.result_id,
+                    result_reporter.result_id,
                     ssv_video.video_path,
                     cur_frame_count,
                     cur_second,
@@ -72,7 +76,7 @@ class AnalysisRunner(object):
                     new_row.add_analyser_result(each_analyser.name, result)
 
                 logger.info(cls.TAG, msg='analysing', **new_row.__dict__)
-                cls.result_reporter.add_row(new_row)
+                result_reporter.add_row(new_row)
 
                 # read new frame
                 ret, frame = each_video.read()
@@ -80,8 +84,3 @@ class AnalysisRunner(object):
         # clean analyser
         for each in analyser_list:
             each.clean()
-
-    @classmethod
-    def reset(cls):
-        """ clean config after usage """
-        cls.result_reporter = ResultReporter()

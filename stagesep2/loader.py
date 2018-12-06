@@ -38,17 +38,21 @@ class TemplatePicture(object):
 
 class TemplateManager(object):
     TAG = 'TemplateManager'
-    # match template 需要模板图片
-    # 该视频需要的模板图片会被放置在此处
-    _match_template_pic_dict = dict()
-    # eg:
-    # { pic_name: TemplatePicture(pic_path), }
+
+    def __init__(self, video_name):
+        self.video_name = video_name
+
+        # match template 需要模板图片
+        # 该视频需要的模板图片会被放置在此处
+        self._match_template_pic_dict = dict()
+        # eg:
+        # { pic_name: TemplatePicture(pic_path), }
 
     def add(self, pic_path):
         new_pic = TemplatePicture(pic_path)
         new_pic_name = new_pic.pic_name
         self._match_template_pic_dict[new_pic_name] = new_pic
-        logger.info(self.TAG, msg='LOAD PICTURE', path=pic_path, name=new_pic_name)
+        logger.info(self.TAG, msg='LOAD PICTURE', path=pic_path, name=new_pic_name, video=self.video_name)
 
     def remove(self, pic_name):
         if pic_name in self._match_template_pic_dict:
@@ -74,7 +78,7 @@ class SSVideo(object):
         # add template example:
         # ssv = SSVideo('some_path/123.mp4')
         # ssv.template_manager.add('some_path/123.png')
-        self.template_manager = TemplateManager()
+        self.template_manager = TemplateManager(self.video_name)
 
         # degree = rotate * 90, 逆时针
         self._rotate = 0
@@ -86,6 +90,9 @@ class SSVideo(object):
         # first and last frame
         self.first_frame = None
         self.last_frame = None
+
+        # load video base info
+        self.load_video_info()
 
     @property
     def rotate(self):

@@ -60,7 +60,8 @@ class ResultRow(object):
 class ResultReporter(object):
     TAG = 'ResultReporter'
 
-    def __init__(self):
+    def __init__(self, video_name):
+        self.video_name = video_name
         self.result_id = str(uuid.uuid1())
         self._row_list = list()
 
@@ -68,7 +69,9 @@ class ResultReporter(object):
         self._row_list.append(new_row)
 
     def export(self, file_path):
-        """ export result to json file """
+        """ export result to json file. Path can be file, dir. """
+
+        # check file path
         if os.path.isfile(file_path):
             logger.warn(self.TAG, msg='File "{}" already existed'.format(file_path))
             file_path = os.path.join(os.path.dirname(file_path), self.result_id + '.json')
@@ -76,6 +79,7 @@ class ResultReporter(object):
             logger.warn(self.TAG, msg='Path "{}" is a directory'.format(file_path))
             file_path = os.path.join(file_path, self.result_id + '.json')
 
+        # write file
         with open(file_path, 'w+') as json_file:
             json_file.write(str(self.data))
             logger.info(self.TAG, msg='Result saved in "{}"'.format(file_path))
