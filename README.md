@@ -6,6 +6,21 @@ Analyse, and convert video into useful data.
 
 ## 目的
 
+### 为什么介入图像识别
+
+以下暂时用移动端的例子。
+
+#### UI
+
+现阶段的UI测试大多属于纯代码层面的行为（大多数的实现方案都是基于uiautomator的控件树）。而对于控件是否真的渲染成为我们希望的样子我们并不知晓。
+
+#### 性能
+
+在常规速度类性能测试中通常通过提前埋点进行app层面的测试，这会有两个问题：
+
+- 具有侵入性（需要改动源码）
+- 对于界面相关的场景不适用（并不知道界面是否已经被真正渲染出来）
+
 ### 图像识别在测试中的应用
 
 一般来说，通过图像识别来进行测试分为三个步骤：
@@ -40,9 +55,11 @@ stagesep 是边研究边开发的产物，在代码结构与工程性上都比�
 - 基于python3开发
 - python2上没试过
 
-```pip install stagesep2```
+```
+pip install stagesep2
+```
 
-#### 安装 tesseract-ocr
+### 安装 tesseract-ocr
 
 如果不想使用ocr，可以用下列方法将其去除：
 
@@ -59,6 +76,8 @@ NormalConfig.ANALYSER_LIST = ['match_template', 'trend']
 安装tesseract及其语言库的方法已经越来越方便，参考[官方文档](https://github.com/tesseract-ocr/tesseract/wiki)
 
 就常规应用而言，OCR达到的效果是相当好的，推荐使用。
+
+> 但该方法由于大量IO会略微降低效率。
 
 ### 简单例子
 
@@ -142,10 +161,12 @@ result1, result2 = AnalysisRunner.run()
             }
         },
 
-        # 趋势分析结果
+        # 趋势分析结果 分别是
+        # 与前一帧的相似程度（0-1）
         # 与视频首尾帧的相似度（0-1）
         # 主要用于鉴定视频从何时进入稳态
         "trend": {
+            "previous": 0.456235276681221
             "first": 1,
             "last": 0.9767144457213878
         }
