@@ -18,12 +18,7 @@ class ReportPainter(object):
         cls.draw_with_dict(content, dst)
 
     @classmethod
-    def draw_with_dict(cls, content, dst):
-        # time line
-        time_list = [each['current_time'] for each in content]
-
-        # trend
-        trend_list = [each['trend'] for each in content]
+    def build_trend_line(cls, time_list, trend_list):
         trend_line = Line('trend')
         for each_attr in ['previous', 'first', 'last']:
             each_list = [i[each_attr] for i in trend_list]
@@ -33,9 +28,10 @@ class ReportPainter(object):
                 each_list,
                 yaxis_min='dataMin',
             )
+        return trend_line
 
-        # match template
-        match_template_list = [each['match_template'] for each in content]
+    @classmethod
+    def build_match_template_line(cls, time_list, match_template_list):
         match_template_dict = dict()
         for each_template in match_template_list:
             for each_name, each_value in each_template.items():
@@ -53,10 +49,27 @@ class ReportPainter(object):
                     time_list,
                     each_list,
                 )
+        return match_template_line
 
-        # merge
+    @classmethod
+    def draw_with_dict(cls, content, dst):
+        # base page
         page = Page()
-        page.add(trend_line)
-        page.add(match_template_line)
+
+        # time line
+        time_list = [each['current_time'] for each in content]
+
+        # trend
+        if 'trend' in content[0]:
+            trend_list = [each['trend'] for each in content]
+            trend_line = cls.build_trend_line(time_list, trend_list)
+            page.add(trend_line)
+
+        # match template
+        if 'match_template' in content[0]:
+            match_template_list = [each['match_template'] for each in content]
+            match_template_line = cls.build_match_template_line(time_list, match_template_list)
+            page.add(match_template_line)
+
         page.render(dst)
         logger.info(cls.TAG, msg='report built finished: "{}"'.format(dst))
