@@ -16,5 +16,6 @@ setup(
         'jieba',
         'scikit-image',
         'pyecharts',
+        'findit',
     ]
 )
