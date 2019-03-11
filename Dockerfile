@@ -1,16 +1,14 @@
-FROM ubuntu:18.04
-MAINTAINER williamfzc <fengzc@vip.qq.com>
+FROM python:3-slim
 
 USER root
-ENV HOME /root
-WORKDIR /root
 
 RUN apt-get update \
-    && apt-get -y install python3 python3-pip \
     && apt-get -y install tesseract-ocr tesseract-ocr-chi-sim \
-    && rm -rf /var/lib/apt/lists/* \
-    && pip3 install stagesep2 \
-    && mkdir stagesep
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /root/stagesep
+RUN pip install --no-cache-dir stagesep2==0.1.4 \
+    && mkdir /root/stagesep2
+
+WORKDIR /root/stagesep2
 CMD ["bash"]
