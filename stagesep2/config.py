@@ -20,3 +20,6 @@ class NormalConfig(object):
 
     # default analyser list (will run)
     ANALYSER_LIST = ['ocr', 'match_template', 'trend']
+
+    # default encoding
+    CHARSET = 'utf-8-sig'
