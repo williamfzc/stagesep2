@@ -18,5 +18,7 @@ setup(
         'pyecharts',
         'pyecharts_snapshot',
         'findit',
+        'tesserocr',
+        'Pillow',
     ]
 )
