@@ -3,6 +3,7 @@ from PIL import Image
 from tesserocr import PyTessBaseAPI
 
 from stagesep2.analyser.base import BaseAnalyser
+from stagesep2.config import OCRConfig
 
 
 def content_filter(old_content):
@@ -16,7 +17,7 @@ class OCRAnalyser(BaseAnalyser):
 
     name = 'ocr'
     TAG = 'OCRAnalyser'
-    tesserocr_api = PyTessBaseAPI(lang='eng+chi_sim')
+    tesserocr_api = PyTessBaseAPI(lang=OCRConfig.lang)
 
     @classmethod
     def run(cls, frame, *args, **kwargs):

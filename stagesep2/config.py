@@ -7,7 +7,7 @@ import cv2
 
 
 class OCRConfig(object):
-    lang = 'eng'
+    lang = 'eng+chi_sim'
 
 
 class MatchTemplateConfig(object):
