@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='stagesep2',
-    version='0.2.1',
+    version='0.2.2',
     description='Analyse, and convert video into useful data.',
     author='williamfzc',
     author_email='fengzc@vip.qq.com',
