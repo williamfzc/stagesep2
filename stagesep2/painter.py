@@ -23,8 +23,8 @@ class ReportPainter(object):
         # base page
         page = Page()
 
-        # time line
-        time_list = [each['current_time'] for each in content]
+        # time line，直接用float作为x轴会出现 echarts 兼容问题
+        time_list = [str(each['current_time']) for each in content]
 
         # trend
         if 'trend' in content[0]:
@@ -57,9 +57,6 @@ class ReportPainter(object):
 
     @classmethod
     def build_match_template_line(cls, time_list, match_template_list):
-        # 直接用float作为x轴会出现 echarts 兼容问题
-        time_list = [str(each) for each in time_list]
-
         match_template_dict = dict()
         for each_template in match_template_list:
             for each_name, each_value in each_template.items():
