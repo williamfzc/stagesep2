@@ -67,12 +67,13 @@ class ReportPainter(object):
 
         match_template_line = Line('match_template')
         for each_name, each_value_list in match_template_dict.items():
-            for each_attr in ['min', 'max']:
-                each_list = [i[each_attr] for i in each_value_list]
-                match_template_line.add(
-                    '{}_{}'.format(each_name, each_attr),
-                    x_axis=time_list,
-                    y_axis=each_list,
-                    is_more_utils=True,
-                )
+            # draw max values only
+            max_list = [i['max'] for i in each_value_list]
+            match_template_line.add(
+                each_name,
+                x_axis=time_list,
+                y_axis=max_list,
+                is_more_utils=True,
+            )
+
         return match_template_line
