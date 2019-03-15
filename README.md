@@ -1,6 +1,11 @@
 # stagesep2
 
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/stagesep2.svg?style=flat-square)
 [![PyPI version](https://badge.fury.io/py/stagesep2.svg)](https://badge.fury.io/py/stagesep2)
+[![Build Status](https://travis-ci.org/williamfzc/stagesep2.svg?branch=master)](https://travis-ci.org/williamfzc/stagesep2)
+[![Maintainability](https://api.codeclimate.com/v1/badges/ad4c729fcf98d98497b8/maintainability)](https://codeclimate.com/github/williamfzc/stagesep2/maintainability)
+
+---
 
 Analyse, and convert video into useful data.
 
@@ -19,13 +24,51 @@ stagesep2 的两个核心功能：
 - 在操作时，页面会有特定的变化（例如chrome icon变暗，或出现点击位置反馈）
 - 在操作后（chrome启动后），页面发生切换，页面上的文字与图像都会发生改变（例如amazon logo出现）
 
+那么，我们可以通过两个方面来进行检测。首先是通过标志性图片：
+
 ![](pics/sample_report.png)
 
-通过对这些阶段进行分析，得到每个阶段及帧对应的时间戳，我们就能够准确地计算出耗时。你的视频FPS越高，数据会越精确。
+可以看到，在 0.2s 时chrome图标被点击，在 0.96s 时amazon图标正式出现。再看看文字的：
+
+```json
+{
+	"result_id": "c2e5116c-462b-11e9-9ed2-005056c00008",
+	"video_name": "./videos/demo1.mp4",
+	"frame_id": 24,
+	"current_time": 0.96,
+	"ocr": ["PO", "/", "1dX00d", "¥", ":", "00Xv00Yv00", "—", "ESRRGRERSize0.0215", ":", "27dSlsB", "(", "ayhttps", "/", "/", "www", ".", "amazon", ".", "comQO", "°", "oa", "\"", "四", "Ney", ",", "DepartmentsListsDealsVideoMusic", "©", "DelivertoChinaWeshipinternationallyWe", "'", "reshowingyouitemsthatshiptoChina", ".", "Toseeiemsthatshiptoadifferentcountrychangeyourgetiveryaddres5AdditionallanguagesettingsareavailableSomecontentmaybeauto", "-", "translatedCHANGETHEADDRESSrs", "并", "~", "Shopwith100%", "ConfidenceonAmazonLJ", "—", ")", "SigninforthebestexperienceCoO00", "@"],
+	"match_template": {
+		"amazon": {
+			"min": -0.4684264361858368,
+			"max": 0.6224471926689148
+		},
+		"chrome": {
+			"min": -0.4022962152957916,
+			"max": 0.7294253706932068
+		},
+		"chrome_clicked": {
+			"min": -0.6132965087890625,
+			"max": 0.7038567066192627
+		}
+	},
+	"trend": {
+		"previous": 0.8785946933890821,
+		"first": 0.8719320065296263,
+		"last": 0.5842399940047383
+	}
+}
+```
+
+节选 0.96s 的检测结果，可以发现在该时刻amazon网页上的相关字样开始出现，与图片检测的结果是一致的。
+
+通过对这些阶段进行分析，得到每个阶段及帧对应的时间戳，我们就能够准确地知晓视频每个阶段发生的事情。你的视频FPS越高，数据会越精确。
 
 # 目的
 
-适用于全平台的性能测试方案。
+全平台的 性能测试/有效性验证 方案
+
+- 渲染内容是否符合期望
+- 渲染性能
 
 ## 为什么介入图像识别
 
@@ -75,6 +118,10 @@ stagesep2 的两个核心功能：
 - [stagesep](https://github.com/williamfzc/stagesep)
 - [利用图像识别与 OCR 进行速度类测试](https://testerhome.com/topics/16063)
 
+# Bug与建议
+
+欢迎通过 issue 告知，或直接发起 PR 加入 :)
+
 # 协议
 
-MIT
+[MIT](LICENSE)
