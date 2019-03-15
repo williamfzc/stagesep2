@@ -1,12 +1,13 @@
+os: linux
+dist: xenial
 language: python
 python:
   - "3.6"
-sudo: required
-before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get -y install tesseract-ocr tesseract-ocr-chi-sim libtesseract-dev libleptonica-dev liblept5 leptonica-progs pkg-config
-  - sudo apt-get -y install libglib2.0 libsm6 libxrender1 libxext-dev
-  - git clone https://github.com/williamfzc/stagesep2-sample.git
-  - pip install --upgrade cython
+sudo: false
+install:
+  - apt-get -qq update
+  - apt-get -y install tesseract-ocr tesseract-ocr-chi-sim libtesseract-dev libleptonica-dev pkg-config
+  - apt-get -y install libglib2.0 libsm6 libxrender1 libxext-dev
+  - pip install --upgrade Cython
   - pip install --upgrade stagesep2
-script: cd stagesep2-sample && python sample.py
+script: git clone https://github.com/williamfzc/stagesep2-sample.git && cd stagesep2-sample && python sample.py
