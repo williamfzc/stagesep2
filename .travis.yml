@@ -15,10 +15,3 @@ install:
   - pip install stagesep2
 
 script: git clone https://github.com/williamfzc/stagesep2-sample.git && cd stagesep2-sample && python sample.py
-
-notifications:
-  email:
-    recipients:
-      - fengzhangchi@vip.qq.com
-    on_success: always
-    on_failure: always
