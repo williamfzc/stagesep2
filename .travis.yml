@@ -1,0 +1,8 @@
+language: python
+sudo: required
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get -y install git
+  - git clone https://github.com/williamfzc/stagesep2-sample.git
+  - pip install --upgrade stagesep2
+script: cd stagesep2-sample && python sample.py
