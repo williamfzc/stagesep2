@@ -8,7 +8,7 @@ import contextlib
 from stagesep2.analyser import ANALYSER_DICT
 
 
-def check_analyser(analyser_list):
+def check_analyser(analyser_list: list) -> list:
     """ check if analyser existed, and return list of runnable analyser """
     new_analyser_list = list()
     for each in analyser_list:
@@ -18,7 +18,7 @@ def check_analyser(analyser_list):
     return new_analyser_list
 
 
-def rotate_pic(old_pic, rotate_time):
+def rotate_pic(old_pic: np.ndarray, rotate_time: int) -> np.ndarray:
     """ 帧逆时针旋转 90*rotate_time 度 """
     new_pic = np.rot90(old_pic, rotate_time)
     return new_pic

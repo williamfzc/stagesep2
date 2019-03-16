@@ -6,7 +6,7 @@
 """
 import cv2
 
-from stagesep2.loader import VideoManager, frame_prepare
+from stagesep2.loader import VideoManager, frame_prepare, SSVideo
 from stagesep2.config import NormalConfig
 from stagesep2.logger import logger
 from stagesep2.reporter import ResultReporter, ResultRow
@@ -28,7 +28,7 @@ class AnalysisRunner(object):
     TAG = 'AnalyserRunner'
 
     @classmethod
-    def run(cls):
+    def run(cls) -> (ResultReporter, list):
         analyser_list = check_analyser(NormalConfig.ANALYSER_LIST)
         video_dict = VideoManager.video_dict
         logger.info(cls.TAG, analyser=analyser_list, video=video_dict)
@@ -40,12 +40,14 @@ class AnalysisRunner(object):
             result_reporter_list.append(result_reporter)
 
         # export result
+        # 如果同时分析多个视频，最终结果是一个装着Reporter的list
+        # 如果只分析一个视频，最终结果是一个Reporter
         if len(result_reporter_list) <= 1:
             return result_reporter_list[0]
         return result_reporter_list
 
     @classmethod
-    def analyse_video(cls, ssv_video, analyser_list, result_reporter):
+    def analyse_video(cls, ssv_video: SSVideo, analyser_list: list, result_reporter: ResultReporter):
         """ analyse ssv video """
         with video_capture(ssv_video) as each_video:
             ret, frame = each_video.read()

@@ -8,14 +8,12 @@ from stagesep2.logger import logger
 from stagesep2.utils import *
 
 
-def path_to_name(file_path):
+def path_to_name(file_path: str) -> str:
     """ full path -> file name """
-    _, name = os.path.split(file_path)
-    name, _ = os.path.splitext(name)
-    return name
+    return os.path.splitext(os.path.basename(file_path))[0]
 
 
-def is_path_existed(file_path):
+def is_path_existed(file_path: str):
     """ check if file is existed """
     return os.path.isfile(file_path)
 
@@ -27,19 +25,19 @@ def frame_prepare(frame):
 
 
 class TemplatePicture(object):
-    def __init__(self, pic_path):
+    def __init__(self, pic_path: str):
         if not is_path_existed(pic_path):
             raise FileNotFoundError('file not existed: {}'.format(pic_path))
 
-        self.pic_name = path_to_name(pic_path)
-        self.pic_path = pic_path
+        self.pic_name: str = path_to_name(pic_path)
+        self.pic_path: str = pic_path
         self.cv_object = frame_prepare(cv2.imread(self.pic_path))
 
 
 class TemplateManager(object):
     TAG = 'TemplateManager'
 
-    def __init__(self, video_name):
+    def __init__(self, video_name: str):
         self.video_name = video_name
 
         # match template 需要模板图片
@@ -48,13 +46,13 @@ class TemplateManager(object):
         # eg:
         # { pic_name: TemplatePicture(pic_path), }
 
-    def add(self, pic_path):
+    def add(self, pic_path: str):
         new_pic = TemplatePicture(pic_path)
         new_pic_name = new_pic.pic_name
         self._match_template_pic_dict[new_pic_name] = new_pic
         logger.info(self.TAG, msg='LOAD PICTURE', path=pic_path, name=new_pic_name, video=self.video_name)
 
-    def remove(self, pic_name):
+    def remove(self, pic_name: str):
         if pic_name in self._match_template_pic_dict:
             del self._match_template_pic_dict[pic_name]
             return True
@@ -68,7 +66,7 @@ class TemplateManager(object):
 class SSVideo(object):
     """ video object """
 
-    def __init__(self, video_path):
+    def __init__(self, video_path: str):
         if not is_path_existed(video_path):
             raise FileNotFoundError('file not existed: {}'.format(video_path))
 
@@ -99,7 +97,7 @@ class SSVideo(object):
         return self._rotate
 
     @rotate.setter
-    def rotate(self, value):
+    def rotate(self, value: int):
         if not isinstance(value, int):
             raise TypeError('rotate should be int')
         self._rotate = value
@@ -137,6 +135,7 @@ class VideoManager(object):
     # 待测视频会被添加到这里
     # 在分析开始时，会遍历此字典
     video_dict = dict()
+
     # eg:
     # { video_name: SSVideo(video_path), }
 
@@ -144,7 +143,7 @@ class VideoManager(object):
         raise NotImplementedError('should not init')
 
     @classmethod
-    def add(cls, video_path):
+    def add(cls, video_path: str):
         new_video = SSVideo(video_path)
         new_video_name = new_video.video_name
         cls.video_dict[new_video_name] = new_video
@@ -152,7 +151,7 @@ class VideoManager(object):
         return new_video
 
     @classmethod
-    def remove(cls, video_name):
+    def remove(cls, video_name: str):
         if video_name in cls.video_dict:
             del cls.video_dict[video_name]
             return True
