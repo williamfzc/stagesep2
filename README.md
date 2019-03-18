@@ -65,6 +65,8 @@ stagesep2 的两个核心功能：
 
 # 目的
 
+> 值得注意的是，在性能测试范畴内，fps的稳定性是非常重要的。而目前软件录制手段实际上并不稳定，容易造成结果不准确的问题。如果用于生产环境，建议使用硬件方式（例如外置摄像头）。
+
 全平台的 性能测试/有效性验证 方案
 
 - 渲染内容是否符合期望
@@ -102,16 +104,22 @@ stagesep2 的两个核心功能：
 
 # 使用
 
-从 [官方示例](https://github.com/williamfzc/stagesep2-sample) 开始。
+目前支持两种使用方式：
+
+- docker（推荐）
+- python包
+
+从 [官方示例](https://github.com/williamfzc/stagesep2-sample) 开始吧。
 
 # 相关内容
 
 ## 依赖
 
 - [opencv](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_tutorials.html): 图像与视频处理
-- [tesseract-ocr](https://github.com/tesseract-ocr/tesseract/wiki/Downloads): 文本检测
+- [tesseract-ocr](https://github.com/tesseract-ocr/tesseract/wiki/Downloads) & [tesserocr](https://github.com/sirfz/tesserocr): 文本检测
 - [skimage](https://github.com/scikit-image/scikit-image): 主要用于图片相似度比较
 - [jieba](https://github.com/fxsjy/jieba)：ocr结果的进一步处理
+- [pyecharts](https://github.com/pyecharts/pyecharts)：结果图表渲染
 
 ## 旧版本
 
