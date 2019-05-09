@@ -11,7 +11,7 @@ class OCRConfig(object):
 
 
 class MatchTemplateConfig(object):
-    cv_method = cv2.TM_CCOEFF_NORMED
+    cv_method = 'cv2.TM_CCOEFF_NORMED'
 
 
 class NormalConfig(object):
