@@ -24,7 +24,7 @@ setup(
         'numpy',
         'jieba',
         'scikit-image',
-        'pyecharts',
+        'pyecharts==0.5.11',
         'pyecharts_snapshot',
         'findit',
         'tesserocr',
