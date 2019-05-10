@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='stagesep2',
-    version='0.2.4',
+    version='0.2.5',
     description='Analyse, and convert video into useful data.',
     author='williamfzc',
     author_email='fengzc@vip.qq.com',
@@ -14,10 +14,10 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
+    python_requires=">=3.6",
     install_requires=[
         'opencv-python',
         'structlog',
