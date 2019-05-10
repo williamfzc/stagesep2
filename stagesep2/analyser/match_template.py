@@ -2,7 +2,7 @@ from stagesep2.analyser.base import BaseAnalyser
 from stagesep2.config import MatchTemplateConfig
 from findit import FindIt
 
-FindIt.set_cv_method(MatchTemplateConfig.cv_method)
+fi = FindIt(cv_method_name=MatchTemplateConfig.cv_method)
 
 
 class MatchTemplateAnalyser(BaseAnalyser):
@@ -11,9 +11,6 @@ class MatchTemplateAnalyser(BaseAnalyser):
 
     @classmethod
     def run(cls, frame, ssv):
-        # init
-        fi = FindIt()
-
         result_dict = dict()
         template_pic_dict = ssv.template_manager.get_dict()
 
