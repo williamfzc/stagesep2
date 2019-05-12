@@ -26,7 +26,7 @@ setup(
         'scikit-image',
         'pyecharts==0.5.11',
         'pyecharts_snapshot',
-        'findit',
+        'findit==0.3.1',
         'tesserocr',
         'Pillow',
     ]
