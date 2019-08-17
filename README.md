@@ -1,3 +1,5 @@
+> 该项目处于低活跃状态，建议使用 https://github.com/williamfzc/stagesepx
+
 # stagesep2
 
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/stagesep2.svg?style=flat-square)
